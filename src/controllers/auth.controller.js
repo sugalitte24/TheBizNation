@@ -34,12 +34,12 @@ export const login = async (req, res) => {
 }
 
 function generateAccessToken(userCrip) {
-    console.log('usuario encontrado', userCrip)
+    //console.log('usuario encontrado', userCrip)
     return jwt.sign(userCrip, `${process.env.SECRET_KEY}`, { expiresIn: '60m' })
 }
 
 export function validateToken(req, res, next) {
-    console.log('headerss= ', req.headers)
+    //console.log('headerss= ', req.headers)
     const accessToken = req.headers['authorization']
     if (!accessToken) res.send('Access denied')
 

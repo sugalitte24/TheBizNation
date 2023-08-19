@@ -1,14 +1,23 @@
+import { Op } from "sequelize";
 import { Pelicula } from "../model/pelicula.js";
 import { Personaje } from "../model/personajes.js";
 
 
 export const getPeliculas = async (req, res) => {
+    const { nombre, generoId } = req.query;
     try {
-        const peliculas = await Pelicula.findAll()
-        res.json({
-            titulo: peliculas.titulo, imagen: peliculas.imagen,
-            fechaCreacion: peliculas.fechaCreacion
+        const peliculas = await Pelicula.findAll({
+            where: {
+                [Op.or]: [
+                    { titulo: `${nombre || ""}` },
+                    { generoId: `${generoId || ""}` },
+                ]
+            },
+            include: {
+                model: Personaje
+            }
         })
+        res.json({ peliculas })
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }

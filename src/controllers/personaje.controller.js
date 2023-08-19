@@ -1,21 +1,31 @@
 import { Pelicula } from "../model/pelicula.js";
 import { Personaje } from "../model/personajes.js";
+import { Op } from "sequelize";
 
 export const getPersonajes = async (req, res) => {
+
+    const { nombre, edad, pelicula } = req.query;
     try {
+
         const personajes = await Personaje.findAll({
+            where: {
+                [Op.or]: [
+                    { nombre: `${nombre || ""}` },
+                    { edad: `${edad || ""}` },
+                    //{ pelicula: `${pelicula || ""}` }
+                ]
+            },
             include: {
                 model: Pelicula
             }
         })
         res.json(personajes)
     } catch (error) {
-        return res.status(500).json({ message: error.message })
+        return res.status(422).json({ message: error.message })
     }
 }
 
 export const createPersonaje = async (req, res) => {
-    console.log(req.body.pelicula)
     const { nombre, edad, peso, historia } = req.body
     const { titulo, calificacion } = req.body.pelicula
     try {
