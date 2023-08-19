@@ -8,8 +8,8 @@ export const Personaje = sequelize.define('personaje', {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
     },
-    imagen: {
-        type: DataTypes.TEXT
+    image: {
+        type: DataTypes.BLOB('long'),
     },
     nombre: {
         type: DataTypes.STRING,

@@ -29,14 +29,18 @@ export const createPelicula = async (req, res) => {
 
     try {
         const newPelicula = await Pelicula.create({
-            titulo, fechaCreacion, calificacion, generoId
+            titulo, fechaCreacion, calificacion, generoId,
+            image: req.file.buffer
         })
 
         const newPersonaje = await Personaje.create({
             nombre, edad, peso, historia, titulo, calificacion
         })
         await newPelicula.addPersonajes(newPersonaje)
-        res.json(newPelicula)
+        res.json({
+            id: newPelicula.id, titulo: titulo, fechaCreacion: fechaCreacion,
+            calificacion: calificacion
+        })
     } catch (error) {
         return res.status(500).json({ message: error.message })
 

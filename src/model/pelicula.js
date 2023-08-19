@@ -17,7 +17,10 @@ export const Pelicula = sequelize.define('pelicula', {
     },
     calificacion: {
         type: DataTypes.INTEGER
-    }
+    },
+    image: {
+        type: DataTypes.BLOB('long'),
+    },
 },
     {
         paranoid: true

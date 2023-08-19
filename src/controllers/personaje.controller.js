@@ -26,18 +26,22 @@ export const getPersonajes = async (req, res) => {
 }
 
 export const createPersonaje = async (req, res) => {
+
     const { nombre, edad, peso, historia } = req.body
     const { titulo, calificacion } = req.body.pelicula
+    //console.log('imagen is.----', req.file)
+    //console.log('imagen is.----', req.bod)
     try {
         const newPersonaje = await Personaje.create({
-            nombre, edad, peso, historia, titulo, calificacion
+            nombre, edad, peso, historia, titulo, calificacion,
+            image: req.file.buffer
         })
         const newPelicula = await Pelicula.create({
             titulo, calificacion
         })
 
         await newPersonaje.addPeliculas(newPelicula);
-        res.json(newPersonaje)
+        res.json({ id: newPersonaje.id, nombre: nombre, edad: edad, peso: peso, historia: historia })
     } catch (error) {
         return res.status(500).json({ message: error.message })
 
@@ -101,7 +105,8 @@ export const getById = async (req, res) => {
         })
 
         if (!personaje) return res.status(404).json({ message: "No existe personaje" })
-        res.json(personaje)
+        //res.set('Content-Type', 'image/jpeg');
+        res.send(personaje)
     } catch (error) {
 
     }

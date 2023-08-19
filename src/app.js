@@ -25,7 +25,9 @@ const swaggerSpec = {
 
 //middlewares
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static('static'));
+
 app.use("/api-doc", swaggerUI.serve, swaggerUI.setup(swaggerJSDoc(swaggerSpec)))
 
 app.use(personajeRoutes)
